@@ -49,10 +49,9 @@ lm(formula = Avg~Year, data=subset(temp_hist, Month==5))
 lm(formula = Avg~Year, data=subset(temp_hist, Month==5 & Year > 1970))
 2000 * 0.007941 -2.270832
 
-temp_hist5 <- subset(temp_hist, Month==5 & Year >= 2000)  # create subset for May
+temp_hist5 <- subset(temp_hist, Month==5 & Year <= 1970)
 plot(temp_hist5$Year, temp_hist5$Avg)
-lm.avg <- lm (temp_hist5$Avg ~ temp_hist5$Year)
-lm.avg
+lm (temp_hist5$Avg ~ temp_hist5$Year)
 abline( lm (temp_hist5$Avg ~ temp_hist5$Year) )
 fitted(lm.avg)  # predicted Avg temperatures
 resid(lm.avg)

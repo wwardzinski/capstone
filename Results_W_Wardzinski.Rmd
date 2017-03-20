@@ -1,0 +1,86 @@
+---
+title: "CAPSTONE_RESULTS_W_Wardzinski"
+author: "Wes Wardzinski"
+date: "March 16, 2017"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Code and Results for Loading and Processing Ottawa temperatures in 20th Century
+
+
+```{r cars}
+####  temp_hist_all <- read.csv(file="C:/STUDY/RYERSON_BIG_DATA/CAPSTONE/eng-monthly-011889-122006.csv", header=TRUE, sep=",")
+temp_hist_all <- read.csv(file="C:/INSTALLS/R/CAPSTONE/eng-monthly-011889-122006.csv", header=TRUE, sep=",")
+
+####  head (temp_hist_all)
+temp_hist <- temp_hist_all[,2:8]
+colnames(temp_hist) <- c("Year","Month","MaxTemp","MinTemp","Avg","MaxExt","MinExt")
+head(temp_hist)
+hist(temp_hist$Avg, main="Histogram of Average Monthly temperatures", xlab = "Avg Temp in Celsius") 
+## Short function to show Month's Average temperatures for the decade
+AvgMM10YY <- function (mm,decade) { 
+  + temp_hist$Avg[which(temp_hist$Month == mm & temp_hist$Year%/%10 == decade)] }
+AvgMM10YY(5,189)
+## Let's see oveall average monthly temperatures
+boxplot(temp_hist$Avg ~ temp_hist$Month, main = "Average Monthly temperatures in 1890-2006", xlab="Months 1=January... 12=December", ylab="Avg  Temp in Celsius") 
+##  As we see the winter months have more fluctuations
+attach(temp_hist)
+plot(Month,Avg, main = "Average Monthly temperatures in 1890-2006", xlab = "Month", ylab = "Avg temp in Celsius")
+## I like boxplot better :)
+
+```
+
+## Continue Fun Plots
+
+```{r echo=TRUE}
+## Let's take begining of the Century.  May temperatures were going down
+x <- c(1910:1919)  
+y <- AvgMM10YY(5,191)
+plot(x,y, main="May temperatures in 1910-1919", xlab="Year",  ylab = "Avg Temp in Celsius")
+cord <- lm(y~x)
+abline(cord)
+cord
+####
+#### Let's take end of the Century.  May temperatures were going up
+x <- c(1980:1989)  
+y <- AvgMM10YY(5,198)
+plot(x,y, main="May temperatures in 1980-1989", xlab="Year",  ylab = "Avg Temp in Celsius")
+cord <- lm(y~x)
+abline(cord)
+cord
+## Let's take larger period of time.
+temp_hist5 <- subset(temp_hist, Month==5 & Year <= 1970)
+plot(temp_hist5$Year, temp_hist5$Avg, main = "May Temperatures 1890-1970", xlab = "Year", ylab = "Avg temp in Celsius")
+lm (temp_hist5$Avg ~ temp_hist5$Year)
+abline( lm (temp_hist5$Avg ~ temp_hist5$Year) )
+## Now Years after 1970
+temp_hist5 <- subset(temp_hist, Month==5 & Year > 1970 & Year < 2001)
+plot(temp_hist5$Year, temp_hist5$Avg, main = "May Temperatures 1971-2000", xlab = "Year", ylab = "Avg temp in Celsius")
+lm (temp_hist5$Avg ~ temp_hist5$Year)
+abline( lm (temp_hist5$Avg ~ temp_hist5$Year) )
+##
+# Let's do the same with Month of December:
+##
+temp_hist5 <- subset(temp_hist, Month==12 & Year <= 1970)
+plot(temp_hist5$Year, temp_hist5$Avg, main = "December Temperatures 1890-1970", xlab = "Year", ylab = "Avg temp in Celsius")
+lm (temp_hist5$Avg ~ temp_hist5$Year)
+abline( lm (temp_hist5$Avg ~ temp_hist5$Year) )
+## Now Years after 1970
+temp_hist5 <- subset(temp_hist, Month==12 & Year > 1970 & Year < 2001)
+plot(temp_hist5$Year, temp_hist5$Avg, main = "December Temperatures 1971-2000", xlab = "Year", ylab = "Avg temp in Celsius")
+lm (temp_hist5$Avg ~ temp_hist5$Year)
+abline( lm (temp_hist5$Avg ~ temp_hist5$Year) )
+
+```
+
+
+
+```{r pressure, echo=FALSE}
+
+```
+
+So, the presented results show us that the temperatures, were steady up to 1970.  After that we noticed slight increase in temperatures ( 0.7 degree per decade)
